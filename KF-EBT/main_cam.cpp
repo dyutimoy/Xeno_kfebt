@@ -151,6 +151,7 @@ int main(int argc, char** argv){
 
     ros::Rate loop_rate(10);
 
+    //publish
 
 
     image_transport::Subscriber image_sub_ = it.subscribe("/KrakenSimulator/front_camera/image_raw", 1, call);
