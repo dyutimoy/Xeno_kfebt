@@ -7,6 +7,7 @@
 #include "trackers/tmosse.h"
 #include "trackers/tvdp.h"
 #include "trackers/tncc.h"
+#include "trackers/tgmm.h"
 #include "kfebt.h"
 
 class KFebTracker
@@ -26,6 +27,7 @@ private:
     tCBT cbt;
     tVDP vdp;
     tncc ncc;
+    tGMM gmm;
 
     std::vector<BTracker*> trackers;
 

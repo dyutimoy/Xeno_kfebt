@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 
 add_subdirectory(piotr_fhog)
 
-set(trackers_LIB_SRC tasms.cpp tcbt.cpp tkcf.cpp tmosse.cpp)
+set(trackers_LIB_SRC tasms.cpp tcbt.cpp tkcf.cpp tmosse.cpp tgmm.cpp)
 
 add_library(trackers STATIC ${trackers_LIB_SRC})
 target_link_libraries(trackers ${OpenCV_LIBS} kcf color )

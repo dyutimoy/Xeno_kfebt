@@ -7,6 +7,7 @@ KFebTracker::KFebTracker()
     cbt = tCBT(ajuste, 0.45);
     vdp = tVDP(ajuste, 0.60);
     ncc = tncc(ajuste, 0.7);
+    gmm = tGMM(ajuste,0.3);
     //gmm=tgmm(adjuste,1.9)
 }
 
@@ -38,8 +39,8 @@ void KFebTracker::init(std::string initPar){
         case 'N':
             trackers.push_back(&ncc);
             break;
-//        case 'G':
-//              trackers.push_back(&gmm);
+        case 'G':
+              trackers.push_back(&gmm);
         default:
             break;
         }

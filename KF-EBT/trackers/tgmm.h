@@ -2,7 +2,7 @@
 #define TGMM_H
 
 #include "btracker.h"
-#include "GMM/colotracker.h"
+#include "GMM/gmm.h"
 
 
 class tGMM : public BTracker
@@ -18,9 +18,10 @@ public:
     cv::Rect getRect();
 
 private:
-    Backgroundtracker gmm;
+    GMM gmm;
     cv::Mat currentFrame;
     std::vector<float> currentPredictRect;
+    Rect r_gmm;
 };
 
 #endif // TASMS_H

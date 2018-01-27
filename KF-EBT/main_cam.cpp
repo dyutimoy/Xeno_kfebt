@@ -50,7 +50,7 @@ void initializeVideo(Mat image) {
   rectOK = false;
 
 
-  tracker.init("AKC");
+  tracker.init("AKCVN");
 
   Rect region;
 
@@ -88,7 +88,7 @@ void processVideo(Mat image){
       Mat saida = image.clone();
       rectangle(saida, output,Scalar(0,255,0), 2);
       imshow("result", saida);
-      waitKey(1000);
+      waitKey(10);
 
 
 
@@ -154,7 +154,7 @@ int main(int argc, char** argv){
     //publish
 
 
-    image_transport::Subscriber image_sub_ = it.subscribe("/KrakenSimulator/front_camera/image_raw", 1, call);
+    image_transport::Subscriber image_sub_ = it.subscribe("input", 1, call);
 
       ros::spin();
 

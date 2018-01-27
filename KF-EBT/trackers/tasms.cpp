@@ -41,6 +41,7 @@ void tASMS::track(){
                          pow(dist_adj*fabs(state[1] - currentPredictRect[1])/((double)asms.lastPosition.height), 2);// +
                          //pow(dist_adj*fabs(state[2] - currentPredictRect[2])/(double)asms.lastPosition.width,2);
     float uncertainty = 1e-4*exp(-3.5*(conf_adj*confidenceASMS - penalityASMS));
+    std::cout<<conf_adj*confidenceASMS <<" oohhh"<<std::endl;
     stateUncertainty.push_back(uncertainty);
     stateUncertainty.push_back(uncertainty);
     stateUncertainty.push_back(uncertainty);

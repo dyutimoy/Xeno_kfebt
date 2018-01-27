@@ -7,44 +7,45 @@ tGMM::tGMM(float dist_adj, float conf_adj)
 }
 
 void tGMM::init(cv::Mat& image, cv::Rect region){
-    gmm.init(image, region.x, region.y, region.x + region.width, region.y + region.height);
+    gmm.init(image,region);
     ratio = (float)region.height/(float)region.width;
+    r_gmm=region;
     updateModel = false;
+
 }
 
 void tGMM::correctState(std::vector<float> st){
     this->state = st;
-    gmm.position.height = st[2]*ratio;
-    gmm.position.width = st[2];
-    gmm.position.x = st[0] - gmm.position.width/2;
-    gmm.position.y = st[1] - gmm.position.height/2;
+    r_gmm.height = st[2]*ratio;
+    r_gmm.width = st[2];
+    r_gmm.x = st[0] - r_gmm.width/2;
+    r_gmm.y = st[1] - r_gmm.height/2;
 }
 //this needs to modified properly
 void tGMM::track(){
-    double confidenceGMM = 0;
 
-    gmm.track(currentFrame, &confidenceGMM);
 
+    r_gmm=gmm.track(currentFrame,r_gmm);
 
     // write state
     state.clear();
-    state.push_back(gmm.position.x);
-    state.push_back(gmm.postion.y);
-    state.push_back(gmm.lastPosition.width);
+    state.push_back(r_gmm.x);
+    state.push_back(r_gmm.y);
+    state.push_back(r_gmm.width);
       ///need to change this part
     this->stateUncertainty.clear();
-    float penalityGMM = pow(dist_adj*fabs(state[0] - currentPredictRect[0])/((double)gmm.position.width),2)  +
-                         pow(dist_adj*fabs(state[1] - currentPredictRect[1])/((double)gmm.position.height), 2);// +
+    float penalityGMM = pow(dist_adj*fabs(state[0] - currentPredictRect[0])/((double)r_gmm.width),2)  +
+                         pow(dist_adj*fabs(state[1] - currentPredictRect[1])/((double)r_gmm.height), 2);// +
                          //pow(dist_adj*fabs(state[2] - currentPredictRect[2])/(double)asms.lastPosition.width,2);
         ///need to decide confidenceGMM kya karu iska
-    float uncertainty = 1e-4*exp(-3.5*(conf_adj*confidenceGMM - penalityGMM));
+    float uncertainty = 1e-4*exp(-3.5*(conf_adj - penalityGMM));
     stateUncertainty.push_back(uncertainty);
     stateUncertainty.push_back(uncertainty);
     stateUncertainty.push_back(uncertainty);
 }
 
 void tGMM::update(){
-    //asms.update();
+
 }
 
 void tGMM::newFrame(cv::Mat &image, std::vector<float> predictRect){
@@ -53,11 +54,6 @@ void tGMM::newFrame(cv::Mat &image, std::vector<float> predictRect){
 }
 
 cv::Rect tGMM::getRect(){
-    cv::Rect rect;
-    rect.x = round(gmm.position.x);
-    rect.y = round(gmm.position.y);
-    rect.width = round(gmm.position.width);
-    rect.height = round(gmm.position.height);
-    return rect;
+    return r_gmm;
 }
 ///why oo why ratio is constatnt
